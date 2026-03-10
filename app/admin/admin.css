@@ -1,0 +1,24 @@
+/* app/admin/admin.css */
+
+.admin-body {
+  min-width: 1280px !important;
+  width: 100% !important;
+  overflow-x: auto !important;
+  background-color: #f7f7f7 !important;
+  display: block !important;
+}
+
+.admin-login-wrapper {
+  min-height: 100vh !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background-color: #f1f0f0 !important;
+}
+
+/* Ensure the content doesn't shrink on desktop view */
+.admin-content-container {
+  width: 1280px !important;
+  margin: 0 auto !important;
+  background-color: #f7f7f7;
+}
