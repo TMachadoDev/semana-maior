@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-import { sendNotificationToAll } from '@/lib/webpush'
 
 export const dynamic = "force-dynamic"
 
@@ -90,15 +89,6 @@ export async function PUT(request: NextRequest) {
       },
       include: { homeTeam: true, awayTeam: true },
     })
-
-    // Se o status mudou para FINISHED, mandar notificação
-    if (data.status === 'FINISHED' && data.homeScore !== undefined && data.awayScore !== undefined) {
-      await sendNotificationToAll({
-        title: 'Fim de Jogo! 🏆',
-        body: `${match.homeTeam.name} ${data.homeScore} x ${data.awayScore} ${match.awayTeam.name}`,
-        url: '/matches',
-      })
-    }
 
     return NextResponse.json(match)
   } catch (error) {

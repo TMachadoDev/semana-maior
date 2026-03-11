@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Download, Share, Plus, ShieldCheck, Sparkles } from 'lucide-react'
+import { Download, Share, Plus, ShieldCheck, Sparkles, X } from 'lucide-react'
 
 interface BeforeInstallPromptEvent extends Event {
   prompt(): Promise<void>
@@ -10,10 +11,12 @@ interface BeforeInstallPromptEvent extends Event {
 }
 
 export function PWAInstallPrompt() {
+  const pathname = usePathname()
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null)
   const [isIOS, setIsIOS] = useState(false)
   const [isStandalone, setIsStandalone] = useState(false)
   const [mounted, setMounted] = useState(false)
+  const [isVisible, setIsVisible] = useState(true)
 
   useEffect(() => {
     setMounted(true)
@@ -38,24 +41,36 @@ export function PWAInstallPrompt() {
     }
 
     window.addEventListener('beforeinstallprompt', handler)
+    
+    // Verificar se o usuário já escolheu continuar no site nesta sessão
+    const dismissed = sessionStorage.getItem('pwa-prompt-dismissed')
+    if (dismissed) {
+      setIsVisible(false)
+    }
+
     return () => window.removeEventListener('beforeinstallprompt', handler)
   }, [])
 
   const handleInstall = async () => {
     if (!deferredPrompt) {
-      alert('Por favor, use o menu do seu navegador para instalar a aplicação.')
+      alert('Por favor, use o menu do seu navegador para instalar a aplicação (Adicionar ao Ecrã Inicial).')
       return
     }
     await deferredPrompt.prompt()
     const { outcome } = await deferredPrompt.userChoice
     if (outcome === 'accepted') {
-      // O navegador vai fechar a aba e abrir o app em muitos casos
+      setIsVisible(false)
     }
     setDeferredPrompt(null)
   }
 
-  // Se já estiver instalado ou não estiver montado (SSR), não mostra nada
-  if (!mounted || isStandalone) return null
+  const handleDismiss = () => {
+    setIsVisible(false)
+    sessionStorage.setItem('pwa-prompt-dismissed', 'true')
+  }
+
+  // Se for admin, já estiver instalado, não estiver montado, ou foi fechado, não mostra
+  if (!mounted || isStandalone || !isVisible || pathname?.startsWith('/admin')) return null
 
   return (
     <div className="fixed inset-0 z-[9999] bg-[#0d0d0d] flex flex-col items-center justify-center p-6 text-center overflow-hidden">
@@ -88,7 +103,7 @@ export function PWAInstallPrompt() {
         </h1>
         
         <p className="text-gray-400 text-sm mb-10 px-4 leading-relaxed">
-          Para garantir a melhor experiência e receber notificações em tempo real, precisas de instalar a aplicação no teu telemóvel.
+          Para garantir a melhor experiência e ter acesso rápido a tudo, instala a aplicação no teu telemóvel.
         </p>
 
         <div className="space-y-4">
@@ -124,16 +139,20 @@ export function PWAInstallPrompt() {
               Instalar Agora
             </button>
           )}
-        </div>
 
-        {/* Feature badges */}
-     
+          <button
+            onClick={handleDismiss}
+            className="w-full py-4 text-gray-500 hover:text-white transition-colors text-sm font-medium"
+          >
+            Continuar a usar a versão site
+          </button>
+        </div>
       </motion.div>
 
       {/* Security notice */}
       <div className="absolute bottom-10 left-0 right-0 px-6">
         <p className="text-[10px] text-gray-600 font-medium uppercase tracking-[0.2em]">
-          100% Seguro - Sem permissões invasivas
+          100% Seguro - Sem instalações pesadas
         </p>
       </div>
     </div>

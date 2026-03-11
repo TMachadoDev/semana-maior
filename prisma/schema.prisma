@@ -178,14 +178,6 @@ model GalleryImage {
   featured    Boolean  @default(false)
 }
 
-model PushSubscription {
-  id        String   @id @default(cuid())
-  endpoint  String   @unique
-  p256dh    String
-  auth      String
-  createdAt DateTime @default(now())
-}
-
 enum Role {
   USER
   ADMIN

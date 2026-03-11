@@ -48,7 +48,8 @@ body {
   font-family: var(--font-body);
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
-  overflow-x: hidden;
+  min-height: 100%;
+  position: relative;
 }
 
 /* iOS safe area support */

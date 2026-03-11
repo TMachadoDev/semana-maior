@@ -1,6 +1,5 @@
 import { BottomNav } from '@/components/layout/BottomNav'
 import { PWAInstallPrompt } from '@/components/pwa/PWAInstallPrompt'
-import { PushNotificationButton } from '@/components/pwa/PushNotificationButton'
 
 export default function MainLayout({
   children,
@@ -14,7 +13,6 @@ export default function MainLayout({
       </main>
       <BottomNav />
       <PWAInstallPrompt />
-      <PushNotificationButton />
     </div>
   )
 }
