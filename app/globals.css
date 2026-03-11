@@ -50,6 +50,7 @@ body {
   color: hsl(var(--foreground));
   min-height: 100%;
   position: relative;
+  overflow-x: hidden;
 }
 
 /* iOS safe area support */
@@ -136,7 +137,6 @@ body {
   .scroll-container {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    overscroll-behavior-y: contain;
   }
 }
 

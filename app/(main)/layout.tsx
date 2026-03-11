@@ -7,8 +7,8 @@ export default function MainLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="relative max-w-md mx-auto bg-white min-h-screen shadow-2xl overflow-hidden">
-      <main className="pb-24 scroll-container">
+    <div className="relative max-w-md mx-auto bg-white min-h-screen shadow-2xl">
+      <main className="pb-24">
         {children}
       </main>
       <BottomNav />
