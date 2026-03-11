@@ -4,7 +4,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -180,9 +180,9 @@ model GalleryImage {
 
 model PushSubscription {
   id        String   @id @default(cuid())
-  endpoint  String   @unique @db.VarChar(512)
-  p256dh    String   @db.VarChar(255)
-  auth      String   @db.VarChar(255)
+  endpoint  String   @unique
+  p256dh    String
+  auth      String
   createdAt DateTime @default(now())
 }
 
