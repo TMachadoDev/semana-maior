@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from 'next'
 import { Playfair_Display, DM_Sans } from 'next/font/google'
 import './globals.css'
 import { Providers } from '@/components/layout/Providers'
+import { NamePrompt } from '@/components/layout/NamePrompt'
+import { Tracker } from '@/components/layout/Tracker'
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -53,6 +55,8 @@ export default function RootLayout({
     <html lang="pt-BR" className={`${playfair.variable} ${dmSans.variable}`}>
       <body className="font-body bg-[#f1f0f0] min-h-screen">
         <Providers>
+          <NamePrompt />
+          <Tracker />
           {children}
         </Providers>
       </body>

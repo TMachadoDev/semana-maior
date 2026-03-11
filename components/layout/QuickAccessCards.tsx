@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { Calendar, Trophy, BarChart3, GraduationCap, Image, Shield, Music } from 'lucide-react'
+import { Calendar, Trophy, BarChart3, GraduationCap, Image, Shield, Music, MessageSquare } from 'lucide-react'
 
 const cards = [
   {
@@ -48,7 +48,15 @@ const cards = [
     textColor: '#0d0d0d',
     border: true,
   },
-
+  {
+    href: '/chat',
+    icon: MessageSquare,
+    label: 'Chat',
+    description: 'Conversa global',
+    bg: '#f7f7f7',
+    textColor: '#0d0d0d',
+    border: true,
+  },
 ]
 
 export function QuickAccessCards() {
