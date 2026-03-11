@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { Calendar, Trophy, BarChart3, GraduationCap, Image, Shield } from 'lucide-react'
+import { Calendar, Trophy, BarChart3, GraduationCap, Image, Shield, Music } from 'lucide-react'
 
 const cards = [
   {
@@ -32,7 +32,7 @@ const cards = [
   },
   {
     href: '/talents',
-    icon: GraduationCap,
+    icon: Music,
     label: 'Talentos',
     description: 'Shows & atrações',
     bg: '#f7f7f7',
@@ -48,15 +48,7 @@ const cards = [
     textColor: '#0d0d0d',
     border: true,
   },
-  {
-    href: '/admin',
-    icon: Shield,
-    label: 'Admin',
-    description: 'Painel de controle',
-    bg: '#f7f7f7',
-    textColor: '#0d0d0d',
-    border: true,
-  },
+
 ]
 
 export function QuickAccessCards() {

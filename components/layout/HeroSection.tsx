@@ -121,7 +121,7 @@ export function HeroSection() {
           <span className="text-white/20">·</span>
           <div className="flex items-center gap-1.5 text-white/50 text-xs">
             <MapPin className="w-3.5 h-3.5" />
-            <span>Campus Principal</span>
+            <span>Escola</span>
           </div>
         </motion.div>
       </div>
