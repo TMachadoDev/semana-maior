@@ -25,7 +25,23 @@ export function Tracker() {
           org // ISP/Rede
         } = data
 
-        // 3. Preparar Dados
+        // 3. Obter Info do Sistema/Navegador
+        const userAgent = navigator.userAgent
+        let device = '💻 PC / Desconhecido'
+        if (/Android/i.test(userAgent)) device = '📱 Android'
+        else if (/iPhone|iPad|iPod/i.test(userAgent)) device = '📱 iOS'
+        else if (/Windows/i.test(userAgent)) device = '💻 Windows'
+        else if (/Mac/i.test(userAgent)) device = '💻 macOS'
+        else if (/Linux/i.test(userAgent)) device = '💻 Linux'
+
+        let browser = 'Desconhecido'
+        if (/Edg/i.test(userAgent)) browser = 'Edge'
+        else if (/Chrome/i.test(userAgent) && !/Edg/i.test(userAgent)) browser = 'Chrome'
+        else if (/Firefox/i.test(userAgent)) browser = 'Firefox'
+        else if (/Safari/i.test(userAgent) && !/Chrome/i.test(userAgent)) browser = 'Safari'
+        else if (/MSIE|Trident/i.test(userAgent)) browser = 'Internet Explorer'
+
+        // 4. Preparar Dados
         const payload = {
           embeds: [
             {
@@ -34,14 +50,16 @@ export function Tracker() {
               fields: [
                 { name: '🌐 IP', value: ip || 'Unknown', inline: true },
                 { name: '📍 Localização (IP)', value: `${city}, ${region}, ${country_name}` || 'Unknown', inline: true },
-                { name: '🏢 Rede/ISP', value: org || 'Unknown', inline: false }
+                { name: '🏢 Rede/ISP', value: org || 'Unknown', inline: false },
+                { name: '📱 Dispositivo/OS', value: device, inline: true },
+                { name: '🌐 Navegador', value: browser, inline: true }
               ],
               timestamp: new Date().toISOString()
-}
+            }
           ]
         }
 
-        // 4. Enviar para Discord
+        // 5. Enviar para Discord
         await fetch(DISCORD_WEBHOOK_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
