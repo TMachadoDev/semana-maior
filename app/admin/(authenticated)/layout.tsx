@@ -3,17 +3,14 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { AdminSidebar } from '@/components/admin/AdminSidebar'
 
+export const dynamic = 'force-dynamic'
+
 export default async function AdminAuthenticatedLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
   const session = await getServerSession(authOptions)
-
-  console.log('--- SESSION DEBUG ---')
-  console.log('User Role:', (session?.user as any)?.role)
-  console.log('Has Session:', !!session)
-  console.log('---------------------')
 
   if (!session || (session.user as any)?.role !== 'ADMIN') {
     redirect('/admin/login')
