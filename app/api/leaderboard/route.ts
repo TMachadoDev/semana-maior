@@ -1,0 +1,43 @@
+import { NextRequest, NextResponse } from 'next/server'
+import { prisma } from '@/lib/prisma'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
+
+export const dynamic = "force-dynamic"
+
+export async function GET(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url)
+    const category = searchParams.get('category') || 'Futsal'
+
+    const entries = await prisma.leaderboardEntry.findMany({
+      where: { category },
+      orderBy: { rank: 'asc' },
+    })
+    return NextResponse.json(entries)
+  } catch (error) {
+    return NextResponse.json({ error: 'Failed to fetch leaderboard' }, { status: 500 })
+  }
+}
+
+export async function PUT(request: NextRequest) {
+  const session = await getServerSession(authOptions)
+  if (!session || (session.user as any)?.role !== 'ADMIN') {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  try {
+    const body = await request.json()
+    const updated = await prisma.leaderboardEntry.update({
+      where: { id: body.id },
+      data: {
+        points: body.points,
+        rank: body.rank,
+        change: body.change,
+      },
+    })
+    return NextResponse.json(updated)
+  } catch (error) {
+    return NextResponse.json({ error: 'Failed to update entry' }, { status: 500 })
+  }
+}
